@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=DotGothic16&family=Gaegu:wght@300;400&family=Gowun+Batang:wght@400;700&family=Instrument+Serif:ital@0;1&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Do+Hyeon&family=DotGothic16&family=Gaegu:wght@300;400&family=Gowun+Batang:wght@400;700&family=Instrument+Serif:ital@0;1&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 @font-face{font-family:'Sunchon';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2202-2@1.0/SuncheonR.woff') format('woff');font-weight:400;font-display:swap}
 @font-face{font-family:'Sunchon';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2202-2@1.0/SuncheonB.woff') format('woff');font-weight:700;font-display:swap}
@@ -404,6 +404,58 @@ body::before{bottom:auto;height:100vh;height:100lvh;min-height:100%}
   .logpanel .logreset:hover{color:#9a9189;transform:none}
 }
 #phaseBox .seg{font-size:calc(var(--h)*.27)}
+#phaseBox .seg{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif!important;font-weight:400!important;text-transform:capitalize!important;letter-spacing:0!important;font-size:calc(var(--h)*.3)!important}
+/* task line: translucent pill */
+.taskline,.tview > .taskline{clip-path:none;filter:none;opacity:1;transform:none;border-radius:999px;border:1.5px solid rgba(255,255,255,.55);color:#2b2622;
+background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.32));-webkit-backdrop-filter:blur(12px) saturate(1.15);backdrop-filter:blur(12px) saturate(1.15);
+box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 6px 18px rgba(30,40,50,.12);padding:.5em 1.6em .55em;text-shadow:none}
+.taskline{transform:translateX(-50%)}
+.tview > .taskline{transform:none}
+.taskline::after{content:none}
+/* metal pill indicator */
+#phaseBox.metal{--h:clamp(40px,5vh,56px);width:calc(var(--h)*3.4);height:var(--h);padding:calc(var(--h)*.07);border-radius:999px;perspective:none;
+background:linear-gradient(180deg,#fbfbfb 0%,#b9bcbf 45%,#8d9195 55%,#e6e7e8 100%)!important;
+box-shadow:0 0 0 1px rgba(60,64,68,.55),0 4px 10px rgba(20,30,40,.25)!important;filter:none}
+#phaseBox.metal .face{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:100%;border-radius:999px;overflow:hidden;
+background:linear-gradient(180deg,#f7f7f7 0%,#d9dadb 28%,#bfc1c3 50%,#d4d5d6 72%,#eeeeee 100%);
+box-shadow:inset 0 0 0 1.5px #5e6266,inset 0 3px 4px rgba(0,0,0,.35),inset 0 -2px 3px rgba(255,255,255,.7);transition:background .25s ease,box-shadow .25s ease}
+#phaseBox.metal .face::before{content:"";position:absolute;left:6%;right:6%;top:8%;height:38%;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,0));pointer-events:none}
+#phaseBox.metal .face::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(180deg,rgba(255,255,255,.08) 0 1px,rgba(0,0,0,.03) 1px 2px);pointer-events:none}
+#phaseBox.metal .ptxt{position:relative;z-index:1;font-family:'Oswald','Arial Narrow','Helvetica Neue',sans-serif;font-weight:600;font-size:calc(var(--h)*.38);letter-spacing:.06em;text-transform:uppercase;color:#4a4d50;text-shadow:0 1px 0 rgba(255,255,255,.75)!important;transition:color .25s,text-shadow .25s}
+#phaseBox.metal.on .face{background:radial-gradient(120% 140% at 50% 30%,color-mix(in srgb,var(--tape,#a7d877) 55%,#fff) 0%,var(--tape,#a7d877) 55%,color-mix(in srgb,var(--tape,#a7d877) 75%,#000) 100%);
+box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--tape,#a7d877) 50%,#000),inset 0 2px 6px rgba(255,255,255,.5),inset 0 -3px 6px rgba(0,0,0,.18),0 0 calc(var(--h)*.35) color-mix(in srgb,var(--tape,#a7d877) 70%,transparent)}
+#phaseBox.metal.on{box-shadow:0 0 0 1px rgba(60,64,68,.55),0 4px 10px rgba(20,30,40,.25),0 0 calc(var(--h)*.6) color-mix(in srgb,var(--tape,#a7d877) 55%,transparent)!important}
+#phaseBox.metal.on .ptxt{color:var(--tape-ink,#fff);text-shadow:0 0 8px rgba(255,255,255,.55)!important}
+#phaseBox.metal.on .face{animation:litOn .5s ease-out}
+@keyframes litOn{0%{filter:brightness(1.9)}100%{filter:none}}
+@media (max-width:640px){#phaseBox.metal{--h:34px}}
+/* indicator pill: keycap style */
+#phaseBox.metal{padding:calc(var(--h)*.1) calc(var(--h)*.1) calc(var(--h)*.16);
+background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),linear-gradient(180deg,#fdfcf9,#ebe8e1 70%,#dcd8cf)!important;
+box-shadow:inset 0 -5px 0 rgba(0,0,0,.08),inset 0 0 0 1px rgba(0,0,0,.06),0 3px 0 #c4bfb5,0 8px 14px rgba(30,30,20,.2)!important}
+#phaseBox.metal .face{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),#e3dfd7;box-shadow:inset 0 2px 3px rgba(0,0,0,.14),inset 0 0 0 1px rgba(0,0,0,.06)}
+#phaseBox.metal .face::before{content:none}
+#phaseBox.metal .face::after{content:none}
+#phaseBox.metal .ptxt{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:500;font-size:calc(var(--h)*.32);letter-spacing:.08em;color:#8a847b;text-shadow:0 1px 0 rgba(255,255,255,.6)!important}
+#phaseBox.metal.on .face{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),var(--tape,#a7d877);box-shadow:inset 0 2px 3px rgba(0,0,0,.1),inset 0 0 0 1px rgba(0,0,0,.08),0 0 calc(var(--h)*.3) color-mix(in srgb,var(--tape,#a7d877) 75%,transparent)}
+#phaseBox.metal.on{box-shadow:inset 0 -5px 0 rgba(0,0,0,.08),inset 0 0 0 1px rgba(0,0,0,.06),0 3px 0 #c4bfb5,0 8px 14px rgba(30,30,20,.2),0 0 calc(var(--h)*.7) color-mix(in srgb,var(--tape,#a7d877) 45%,transparent)!important}
+#phaseBox.metal.on .ptxt{color:var(--tape-ink,#fff);text-shadow:none!important}
+#phaseBox.metal.brk .ptxt{color:#5f5a54}
+/* log sheet: all handwriting like the date */
+.logpanel .sheet,.logpanel .sheet *{font-family:'Gaegu',cursive!important;letter-spacing:0!important}
+.logpanel .sheet{font-size:20px!important;color:#3d3c3a}
+.logpanel .lh b{font-size:30px!important;font-weight:700!important}
+.logpanel .lh span#logDate{font-size:21px!important}
+.logpanel .big{font-size:46px!important;font-weight:700!important}
+.logpanel .big small{font-size:24px!important;font-weight:400!important}
+.logpanel .stat{font-size:19px!important}
+.logpanel .stat b{font-weight:700!important}
+.logpanel li{font-size:20px!important}
+.logpanel li em{font-size:20px!important;font-weight:700!important}
+.logpanel li.hd span,.logpanel li.hd em{font-size:17px!important;font-weight:400!important}
+.logpanel .empty{font-size:18px!important}
+.logpanel .lh b,.logpanel .big,.logpanel .stat,.logpanel li{filter:url(#pencil)}
+@media (max-width:640px){.logpanel .sheet{font-size:18px!important}.logpanel .lh b{font-size:26px!important}.logpanel .big{font-size:38px!important}.logpanel li,.logpanel li em{font-size:18px!important}.logpanel .stat{font-size:17px!important}}
 </style>
 </head>
 <body>
@@ -501,7 +553,7 @@ body::before{bottom:auto;height:100vh;height:100lvh;min-height:100%}
   </div>
     <div class="tview" id="session-view" hidden>
       <span id="cupCount" hidden>0</span>
-      <div class="phasebox" id="phaseBox" role="status" aria-live="polite"><span class="vh" id="phaseLabel">focus</span><span class="cap" aria-hidden="true"><span class="seg sf"><span>focus</span><i class="led"></i></span><span class="seg sb"><span>break</span><i class="led"></i></span></span></div>
+      <div class="phasebox metal" id="phaseBox" role="status" aria-live="polite"><span class="face"><span class="ptxt" id="phaseLabel">focus</span></span></div>
       <div class="ttimer" id="timer" role="timer" aria-label="남은 시간">25:00</div>
       <p class="taskline" id="taskLine">오늘의 티타임</p>
       <p class="tstatus" id="status" aria-live="polite">차고가 녹고 있어요</p>
@@ -724,6 +776,43 @@ body::before{bottom:auto;height:100vh;height:100lvh;min-height:100%}
   function unlockAudio(){ var c = audioCtx(); if (c && c.state === 'suspended') c.resume(); }
   window.addEventListener('pointerdown', unlockAudio, { once:false });
   window.addEventListener('keydown', unlockAudio);
+  function ding(){
+    var c = audioCtx(); if (!c) return; if (c.state === 'suspended') c.resume();
+    var t = c.currentTime + 0.01;
+    // relay clunk
+    var n = c.createBufferSource(); n.buffer = noiseBuf; var lp = c.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value = 420;
+    var ng = c.createGain(); ng.gain.setValueAtTime(0.0001, t); ng.gain.exponentialRampToValueAtTime(0.5, t + 0.004); ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.07);
+    n.connect(lp); lp.connect(ng); ng.connect(c.destination); n.start(t, 0, 0.1);
+    var th = c.createOscillator(), tg = c.createGain(); th.type='sine'; th.frequency.setValueAtTime(140, t); th.frequency.exponentialRampToValueAtTime(60, t + 0.08);
+    tg.gain.setValueAtTime(0.0001, t); tg.gain.exponentialRampToValueAtTime(0.35, t + 0.005); tg.gain.exponentialRampToValueAtTime(0.0001, t + 0.12);
+    th.connect(tg); tg.connect(c.destination); th.start(t); th.stop(t + 0.15);
+    // warm on-air tone
+    var t2 = t + 0.06, f = c.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 1600; var out = c.createGain(); out.gain.value = 0.16; f.connect(out); out.connect(c.destination);
+    [[523.25,'sine',1],[784,'sine',0.45],[1046.5,'triangle',0.12]].forEach(function(p){
+      var o = c.createOscillator(), g = c.createGain(); o.type = p[1]; o.frequency.value = p[0];
+      g.gain.setValueAtTime(0.0001, t2); g.gain.exponentialRampToValueAtTime(p[2], t2 + 0.03); g.gain.setValueAtTime(p[2], t2 + 0.18); g.gain.exponentialRampToValueAtTime(0.0001, t2 + 0.9);
+      o.connect(g); g.connect(f); o.start(t2); o.stop(t2 + 0.95);
+    });
+  }
+  function powerDown(){
+    var c = audioCtx(); if (!c) return; if (c.state === 'suspended') c.resume();
+    var t = c.currentTime + 0.01, f = c.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 900;
+    var out = c.createGain(); out.gain.value = 0.32; f.connect(out); out.connect(c.destination);
+    // two low notes stepping down: "뚜-둥"
+    [[261.63,0,0.22],[174.61,0.16,0.42]].forEach(function(p){
+      var at = t + p[1];
+      [['triangle',1],['sine',0.6]].forEach(function(w,i){
+        var o = c.createOscillator(), g = c.createGain(); o.type = w[0]; o.frequency.value = p[0] * (i ? 0.5 : 1);
+        o.frequency.setValueAtTime(p[0] * (i ? 0.5 : 1), at); o.frequency.exponentialRampToValueAtTime(p[0] * (i ? 0.5 : 1) * 0.94, at + p[2]);
+        g.gain.setValueAtTime(0.0001, at); g.gain.exponentialRampToValueAtTime(w[1], at + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, at + p[2]);
+        o.connect(g); g.connect(f); o.start(at); o.stop(at + p[2] + 0.03);
+      });
+    });
+    // switch thunk at the end
+    var t2 = t + 0.5, n = c.createBufferSource(); n.buffer = noiseBuf; var lp = c.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value = 350;
+    var ng = c.createGain(); ng.gain.setValueAtTime(0.0001, t2); ng.gain.exponentialRampToValueAtTime(0.45, t2 + 0.004); ng.gain.exponentialRampToValueAtTime(0.0001, t2 + 0.06);
+    n.connect(lp); lp.connect(ng); ng.connect(c.destination); n.start(t2, 0, 0.08);
+  }
   function rustle(){
     var c = audioCtx(); if (!c || c.state !== 'running') return;
     var now = performance.now(); if (now - lastRustle < 250) return; lastRustle = now;
@@ -919,12 +1008,12 @@ body::before{bottom:auto;height:100vh;height:100lvh;min-height:100%}
 
   function start(){ S.running=true; S.waiting=false; S.endAt=Date.now()+S.remaining*1000; if(S.phase==='focus'&&S.remaining===S.total) drop(); render(); }
   function pause(){ S.remaining=Math.max(0,(S.endAt-Date.now())/1000); S.running=false; render(); }
-  function endPhase(skipped){ chime(); if(S.phase==='focus'){ commitRound(!skipped); if(!skipped) S.cups++; save(); setPhase('break'); start(); } else { setPhase('focus'); S.running=false; S.waiting=true; render(); } }
+  function endPhase(skipped){ if(S.phase!=='focus') chime(); if(S.phase==='focus'){ commitRound(!skipped); if(!skipped) S.cups++; save(); setPhase('break'); start(); } else { setPhase('focus'); S.running=false; S.waiting=true; render(); } }
   var PAUSEI='<svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><rect x="4" y="3" width="4" height="14" fill="currentColor"/><rect x="12" y="3" width="4" height="14" fill="currentColor"/></svg>', PLAYI='<svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M5 3 L17 10 L5 17 Z" fill="currentColor"/></svg>';
   function render(){
     var p = S.total ? 1 - S.remaining/S.total : 0, liq=$('liquid');
     $('timer').textContent = fmt(S.remaining);
-    $('phaseLabel').textContent = S.waiting ? 'ready' : (S.phase === 'focus' ? 'focus' : 'break'); $('phaseBox').classList.toggle('on', !S.waiting && S.phase === 'focus'); var _pb=$('phaseBox'), _ps=_pb.className; _pb.classList.toggle('brk', !S.waiting && S.phase !== 'focus'); if(_pb.dataset.ps && _pb.dataset.ps!==_pb.className && typeof keyClick==='function'){ keyClick(false); setTimeout(function(){ keyClick(true); },60); } _pb.dataset.ps=_pb.className;
+    $('phaseLabel').textContent = S.waiting ? 'ready' : (S.phase === 'focus' ? 'focus' : 'break'); $('phaseBox').classList.toggle('on', !S.waiting && S.phase === 'focus'); var _pb=$('phaseBox'), _ps=_pb.className; _pb.classList.toggle('brk', !S.waiting && S.phase !== 'focus'); if(_pb.dataset.ps && _pb.dataset.ps!==_pb.className){ if(_pb.classList.contains('on')) ding(); else if(/\bon\b/.test(_pb.dataset.ps)) powerDown(); else if(typeof keyClick==='function') keyClick(true); } _pb.dataset.ps=_pb.className;
     $('cupCount').textContent = S.cups;
     $('session-view').classList.toggle('paused', !S.running);
     document.title = (S.running ? fmt(S.remaining)+' · ' : '') + '백다담 뽀모도로 타이머';
