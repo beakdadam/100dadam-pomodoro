@@ -9,6 +9,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=DotGothic16&family=Gaegu:wght@300;400&family=Gowun+Batang:wght@400;700&family=Instrument+Serif:ital@0;1&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
+@font-face{font-family:'Sunchon';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2202-2@1.0/SuncheonR.woff') format('woff');font-weight:400;font-display:swap}
+@font-face{font-family:'Sunchon';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2202-2@1.0/SuncheonB.woff') format('woff');font-weight:700;font-display:swap}
+
 :root{
   /* layout: full-screen grainy meadow; serif title, the open tin (3 차고 in the lid, 3 in the tray), a glass pill button */
   --ink:#3b2a1c;
@@ -226,9 +229,213 @@ h1{margin:0;text-align:center;font-family:var(--title);font-weight:400;font-size
   .item .face,#tablet.dropping,.wrapped,.wrapper,.tablet,#teaWord,.item .name::after{transition:none}
   .steam path{animation:none;opacity:.5}
 }
+/* washi tape for focus label and task line, tinted with the chosen chago wrapper */
+.phasebox,.taskline{--tp:var(--tape,#d6dce3);border:0;border-radius:0;color:var(--tape-ink,#2b2622);background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .15 0 0 0 0 .12 0 0 0 0 .1 0 0 0 .32 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),linear-gradient(104deg,transparent 30%,rgba(255,255,255,.28) 31%,transparent 33%,transparent 62%,rgba(0,0,0,.05) 63%,rgba(255,255,255,.22) 64.5%,transparent 66%),linear-gradient(180deg,color-mix(in srgb,var(--tp) 78%,#fff),color-mix(in srgb,var(--tp) 88%,#fff));opacity:.93;padding:.5em 1.9em .6em;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none;
+clip-path:polygon(1.6% 0,98.2% 1%,99.6% 9%,98.4% 18%,100% 27%,98.8% 38%,99.8% 47%,98.3% 58%,99.9% 66%,98.6% 77%,100% 86%,98.5% 100%,1.2% 99%,0 90%,1.5% 80%,.2% 70%,1.7% 61%,.4% 50%,1.4% 41%,0 31%,1.6% 21%,.3% 11%);filter:drop-shadow(0 2px 3px rgba(40,30,20,.18))}
+.phasebox::after,.taskline::after{content:none}
+.phasebox{transform:translateX(-50%) rotate(-1.6deg)}
+.taskline{transform:translateX(-50%) rotate(1.1deg)}
+.tview > .phasebox{transform:rotate(-1.6deg)}
+.tview > .taskline{transform:rotate(1.1deg)}
+/* today log folder */
+.logbtn{position:fixed;right:2.4vw;top:2.4vh;z-index:60;width:clamp(70px,8.6vh,104px);aspect-ratio:1;border:0;background:none;padding:0;cursor:pointer;filter:drop-shadow(0 6px 10px rgba(30,40,30,.22))}
+.logbtn svg{width:100%;height:100%;overflow:visible}
+.logbtn .paper{transition:transform .25s cubic-bezier(.3,1.4,.5,1)}
+.logbtn .front{transform-origin:50% 100%;transition:transform .25s ease}
+.logbtn:hover .paper,.logbtn[aria-expanded="true"] .paper{transform:translateY(-7px)}
+.logbtn:hover .front,.logbtn[aria-expanded="true"] .front{transform:skewX(-4deg) scaleY(.94)}
+.logbtn:focus-visible{outline:2px dashed #fff;outline-offset:4px;border-radius:10px}
+.logpanel{position:fixed;right:3vw;top:calc(2.4vh + clamp(70px,8.6vh,104px) - 2px);z-index:59;width:min(400px,90vw);filter:drop-shadow(0 14px 22px rgba(30,30,20,.28)) drop-shadow(0 2px 3px rgba(30,30,20,.15));transform:rotate(-1.8deg);transform-origin:90% 0;animation:logIn .26s cubic-bezier(.3,1.3,.5,1)}
+.logpanel[hidden]{display:none}
+@keyframes logIn{from{opacity:0;transform:translateY(-14px) rotate(-5deg) scale(.96)}to{opacity:1;transform:rotate(-1.8deg)}}
+.logpanel .sheet{--lh:34px;max-height:68vh;overflow:auto;scrollbar-width:none;padding:calc(var(--lh) + 7px) 22px calc(var(--lh)*.6 - 7px) 64px;color:#3d3c3a;font-family:'Sunchon','Pretendard','Noto Sans KR',sans-serif;font-size:15.5px;line-height:var(--lh);letter-spacing:0;
+background:linear-gradient(90deg,transparent 46px,#e2575a 46px,#e2575a 47.5px,transparent 47.5px),repeating-linear-gradient(180deg,transparent 0,transparent calc(var(--lh) - 1px),#a7b9dc calc(var(--lh) - 1px),#a7b9dc var(--lh)),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),linear-gradient(170deg,#ffffff,#f6f6f4);background-attachment:local,local,local,local;border-radius:3px;
+-webkit-mask:radial-gradient(circle 8px at 24px 44px,transparent 96%,#000 100%) 0 0/100% 88px repeat-y;mask:radial-gradient(circle 8px at 24px 44px,transparent 96%,#000 100%) 0 0/100% 88px repeat-y}
+.logpanel .sheet::-webkit-scrollbar{display:none}
+.logpanel .lh{display:flex;justify-content:space-between;align-items:baseline;height:var(--lh)}
+.logpanel .lh b{font-family:'Sunchon','Pretendard',sans-serif;font-weight:400;font-size:26px;letter-spacing:2px;color:#1f1b18}
+.logpanel .lh span{font-family:'Gaegu',cursive;font-size:21px;color:#6d655e;letter-spacing:0;filter:url(#pencil)}
+.logpanel .big{font-size:38px;font-weight:700;letter-spacing:-.5px;line-height:calc(var(--lh)*2);height:calc(var(--lh)*2);color:#2b2622}
+.logpanel .big small{font-size:18px;font-weight:400;letter-spacing:0;margin:0 8px 0 3px;color:#6d655e}
+.logpanel .stat{height:var(--lh);color:#6d655e;font-size:14.5px}
+.logpanel .stat b{font-weight:700;color:#2b2622}
+.logpanel ul{list-style:none;margin:var(--lh) 0 0;padding:0}
+.logpanel li{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;height:var(--lh);white-space:nowrap}
+.logpanel li i{width:10px;height:10px;border-radius:2px;transform:rotate(-8deg)}
+.logpanel li span{overflow:hidden;text-overflow:ellipsis}
+.logpanel li small{color:#9a9189;font-size:12.5px;margin-left:6px}
+.logpanel li em{font-style:normal;font-weight:700;color:#6d655e;font-size:14.5px}
+.logpanel .empty{color:#8a8178}
+.logbtn,.logpanel,.mallbtn{display:none}
+body:has(#session-view:not([hidden])) .logbtn,body:has(#session-view:not([hidden])) .mallbtn{display:block}
+body:has(#session-view:not([hidden])) .logpanel:not([hidden]){display:block}
+.mallbtn{position:fixed;right:calc(2.4vw + clamp(70px,8.6vh,104px)*.12);top:calc(2.4vh + clamp(70px,8.6vh,104px) + 2px);z-index:58;width:calc(clamp(70px,8.6vh,104px)*.82);aspect-ratio:1}
+.mallbtn svg{filter:drop-shadow(0 6px 10px rgba(30,40,30,.22))}
+.mallbtn svg{width:100%;height:100%;overflow:visible}
+.mallbtn .bag{transform-box:fill-box;transform-origin:50% 50%;transition:transform .25s cubic-bezier(.3,1.4,.5,1)}
+.mallbtn:hover .bag,.mallbtn:focus-visible .bag{transform:rotate(-8deg)}
+.mallbtn:focus-visible{outline:2px dashed #fff;outline-offset:4px;border-radius:10px}
+.mallbtn .tip{position:absolute;right:calc(100% + 6px);top:calc(50% - 15px);height:30px;line-height:30px!important;padding:0 12px!important;opacity:0;pointer-events:none;white-space:nowrap;background:#fffdf8;color:#2b2622;font:600 13px/1 'Pretendard','Noto Sans KR',sans-serif;letter-spacing:-.3px;border-radius:999px;box-shadow:none;border:1px solid rgba(0,0,0,.08);transition:opacity .15s;-webkit-font-smoothing:antialiased}
+.mallbtn:hover .tip,.mallbtn:focus-visible .tip{opacity:1}
+.logpanel li{grid-template-columns:1fr auto 3.2em!important;gap:14px!important}
+.logpanel li span{display:flex;align-items:center;gap:8px;min-width:0}
+.logpanel li span i{flex:none}
+.logpanel li em:last-child{text-align:right;color:#2b2622}
+.logpanel li.hd{color:#9a9189;font-size:13px}
+.logpanel li.hd em{font-weight:400!important;color:#9a9189!important;font-size:13px!important}
+.mallbtn .tip,.logpanel,.logpanel *{text-shadow:none!important}
+.logpanel .chips{display:inline-flex;flex:none;margin-right:2px}
+.logpanel .chips .chip+.chip{margin-left:-5px}
+.logpanel i.chip{display:block;width:15px;height:15px;border-radius:3.5px;transform:rotate(-7deg);background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.35' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .5 -.12'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),var(--cc);box-shadow:inset 0 -2px 0 rgba(0,0,0,.18),inset 0 0 0 1px rgba(0,0,0,.12),0 1px 1.5px rgba(0,0,0,.2)}
+.logpanel li em.tm{font-variant-numeric:tabular-nums;letter-spacing:.5px}
+.logpanel li{grid-template-columns:1fr auto!important}
+.logpanel li.hd span,.logpanel li.hd em{font-size:13.5px!important;letter-spacing:1px}
+.logpanel i.chip{width:11px;height:11px;border-radius:2px 3.5px 2px 4px;transform:rotate(-8deg);box-shadow:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -.75'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),var(--cc);opacity:.92}
+.logpanel .chips .chip+.chip{margin-left:-3px}
+.sharebtn{position:fixed;right:calc(2.4vw + clamp(70px,8.6vh,104px)*.12);top:calc(2.4vh + clamp(70px,8.6vh,104px) + 4px + clamp(70px,8.6vh,104px)*.82);z-index:57;width:calc(clamp(70px,8.6vh,104px)*.82);aspect-ratio:1;border:0;background:none;padding:0;cursor:pointer;display:none}
+body:has(#session-view:not([hidden])) .sharebtn{display:block}
+.sharebtn svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 6px 10px rgba(30,40,30,.22))}
+.sharebtn .plane{transform-box:fill-box;transform-origin:50% 50%;transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
+.sharebtn:hover .plane,.sharebtn:focus-visible .plane{transform:translate(3px,-3px) rotate(-4deg)}
+.sharebtn:focus-visible{outline:2px dashed #fff;outline-offset:4px;border-radius:10px}
+.sharebtn .tip{position:absolute;right:calc(100% + 6px);top:calc(50% - 15px);height:30px;line-height:30px;padding:0 12px;opacity:0;pointer-events:none;white-space:nowrap;background:#fffdf8;color:#2b2622;font:600 13px/30px 'Pretendard','Noto Sans KR',sans-serif;letter-spacing:-.3px;border-radius:999px;border:1px solid rgba(0,0,0,.08);transition:opacity .15s;text-shadow:none!important}
+.sharebtn:hover .tip,.sharebtn:focus-visible .tip,.sharebtn.done .tip{opacity:1}
+/* metal toggle for focus / break */
+#phaseBox{--h:clamp(46px,5.8vh,68px);width:calc(var(--h)*3);height:var(--h);padding:0;border:0;border-radius:999px;clip-path:none;opacity:1;color:inherit;
+background:linear-gradient(180deg,#fbfbfb 0%,#c9ccd0 30%,#8f9499 52%,#d9dbde 74%,#f2f3f4 100%);
+filter:drop-shadow(0 5px 8px rgba(20,30,40,.28));box-shadow:none;isolation:isolate}
+.tview > #phaseBox{transform:none}
+#phaseBox::before{content:"";position:absolute;inset:calc(var(--h)*.1);border-radius:999px;background:#c6c9cd;box-shadow:inset 0 3px 6px rgba(0,0,0,.28),inset 0 -1px 0 rgba(255,255,255,.6);transition:background .45s ease;z-index:0}
+#phaseBox.on::before{background:color-mix(in srgb,var(--tape,#7fbf8e) 92%,#000 8%)}
+#phaseBox::after{content:"";position:absolute;inset:calc(var(--h)*.1);border-radius:999px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");z-index:1;pointer-events:none}
+#phaseBox .swlabel{position:absolute;top:0;bottom:0;display:flex;align-items:center;z-index:2;font-family:'Pretendard','Pretendard Variable','Noto Sans KR',sans-serif;font-weight:700;font-size:calc(var(--h)*.31);letter-spacing:.08em;text-transform:uppercase;text-shadow:none;transition:left .45s cubic-bezier(.5,0,.2,1),right .45s cubic-bezier(.5,0,.2,1),color .3s,opacity .2s;left:auto;right:calc(var(--h)*.5);color:#6f747a}
+#phaseBox.on .swlabel{right:calc(var(--h)*1.3);color:var(--tape-ink,#fff)}
+#phaseBox .knob{position:absolute;z-index:3;top:calc(var(--h)*.1);left:calc(var(--h)*.1);width:calc(var(--h)*.8);height:calc(var(--h)*.8);border-radius:50%;
+background:radial-gradient(circle at 38% 30%,#ffffff 0%,#e6e8ea 30%,#b5babf 70%,#9aa0a6 100%);box-shadow:0 3px 6px rgba(0,0,0,.35),inset 0 -3px 5px rgba(0,0,0,.15),inset 0 2px 2px rgba(255,255,255,.9),0 0 0 1px rgba(80,86,92,.35);
+transition:left .45s cubic-bezier(.5,0,.2,1.15)}
+#phaseBox.on .knob{left:calc(100% - var(--h)*.9)}
+#phaseBox .knob::after{content:"";position:absolute;inset:18%;border-radius:50%;background:radial-gradient(circle at 50% 35%,#f6f7f8,#c8ccd0);box-shadow:inset 0 1px 2px rgba(0,0,0,.15)}
+/* toggle: flat keycap look */
+#phaseBox{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),linear-gradient(180deg,#fdfcf9,#ebe8e1 70%,#dcd8cf);filter:none;box-shadow:inset 0 -6px 0 rgba(0,0,0,.08),inset 0 0 0 1px rgba(0,0,0,.06),0 3px 0 #b9b4aa,0 8px 14px rgba(30,30,20,.2)}
+#phaseBox::before{inset:calc(var(--h)*.12) calc(var(--h)*.12) calc(var(--h)*.18);background:#d9d5cc;box-shadow:inset 0 2px 0 rgba(0,0,0,.08)}
+#phaseBox.on::before{background:var(--tape,#a7d877)}
+#phaseBox::after{inset:calc(var(--h)*.12) calc(var(--h)*.12) calc(var(--h)*.18)}
+#phaseBox .swlabel{bottom:calc(var(--h)*.06);color:#8d877e}
+#phaseBox .knob{top:calc(var(--h)*.12);left:calc(var(--h)*.12);width:calc(var(--h)*.7);height:calc(var(--h)*.7);background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),linear-gradient(180deg,#ffffff,#f1eee8);box-shadow:inset 0 -4px 0 rgba(0,0,0,.08),inset 0 0 0 1px rgba(0,0,0,.07),0 2px 0 #c4bfb5,0 3px 6px rgba(30,30,20,.18)}
+#phaseBox.on .knob{left:calc(100% - var(--h)*.82)}
+#phaseBox .knob::after{content:none}
+/* rocker switch focus | break */
+#phaseBox{--h:clamp(44px,5.4vh,62px);width:calc(var(--h)*3.3);height:var(--h);border-radius:calc(var(--h)*.24);padding:0;
+background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .2 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),linear-gradient(180deg,#e4e1da,#efece6);box-shadow:inset 0 2px 4px rgba(0,0,0,.16),inset 0 0 0 1px rgba(0,0,0,.08),0 1px 0 rgba(255,255,255,.8),0 6px 14px rgba(30,30,20,.16);filter:none}
+#phaseBox::before,#phaseBox::after,#phaseBox .knob,#phaseBox .swlabel{content:none;display:none}
+#phaseBox .seg{position:absolute;top:0;bottom:0;width:50%;display:flex;align-items:center;justify-content:center;z-index:3;font-family:'Pretendard','Pretendard Variable','Noto Sans KR',sans-serif;font-weight:700;font-size:calc(var(--h)*.3);letter-spacing:.06em;text-transform:uppercase;color:#a9a39a;text-shadow:none;transition:color .35s,text-shadow .35s,transform .45s cubic-bezier(.5,0,.2,1.2)}
+#phaseBox .sf{left:0} #phaseBox .sb{right:0}
+#phaseBox .cap{position:absolute;z-index:2;top:calc(var(--h)*.08);bottom:calc(var(--h)*.08);width:calc(50% - var(--h)*.08);left:calc(var(--h)*.08);border-radius:calc(var(--h)*.18);
+background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .2 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),linear-gradient(90deg,#f4f2ed,#ffffff 35%,#f1eee8 80%,#dcd8cf);box-shadow:inset 0 -4px 0 rgba(0,0,0,.07),inset 0 0 0 1px rgba(0,0,0,.07),2px 2px 0 #c9c4ba,3px 5px 8px rgba(30,30,20,.2);
+transition:left .45s cubic-bezier(.5,0,.2,1.2)}
+#phaseBox.on .cap{left:50%}
+#phaseBox.on .sf{color:color-mix(in srgb,var(--tape,#a7d877) 78%,#000);text-shadow:0 0 6px color-mix(in srgb,var(--tape,#a7d877) 85%,transparent),0 0 14px color-mix(in srgb,var(--tape,#a7d877) 60%,transparent)}
+#phaseBox.on .sb{transform:translate(1px,-1px)}
+#phaseBox.brk .sb{color:#5f5a54}
+#phaseBox:not(.on) .sf{transform:translate(1px,-1px)}
+#phaseBox:not(.on):not(.brk) .cap{left:calc(var(--h)*.08)}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* rocker: tilt instead of slide */
+#phaseBox{perspective:calc(var(--h)*6)}
+#phaseBox .cap{left:calc(var(--h)*.08)!important;right:calc(var(--h)*.08);width:auto;transform-style:preserve-3d;transform:rotateY(0);transition:transform .16s cubic-bezier(.3,1.6,.5,1),box-shadow .16s;
+background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .2 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),linear-gradient(90deg,var(--sl,#efece6),#fdfcf9 50%,var(--sr,#efece6));
+box-shadow:inset 0 -4px 0 rgba(0,0,0,.07),inset 0 0 0 1px rgba(0,0,0,.07),0 3px 6px rgba(30,30,20,.16)}
+#phaseBox .cap::after{content:"";position:absolute;top:12%;bottom:16%;left:50%;width:1px;background:rgba(0,0,0,.09);box-shadow:1px 0 0 rgba(255,255,255,.7)}
+#phaseBox .seg{transform:none!important}
+#phaseBox.on .cap{--sl:#d3cdc2;--sr:#ffffff;transform:rotateY(-14deg);box-shadow:inset 0 -4px 0 rgba(0,0,0,.07),inset 0 0 0 1px rgba(0,0,0,.07),4px 3px 6px rgba(30,30,20,.2)}
+#phaseBox.brk .cap{--sl:#ffffff;--sr:#d3cdc2;transform:rotateY(14deg);box-shadow:inset 0 -4px 0 rgba(0,0,0,.07),inset 0 0 0 1px rgba(0,0,0,.07),-4px 3px 6px rgba(30,30,20,.2)}
+/* rocker switch v3: horizontal panel switch with LED */
+#phaseBox{--h:clamp(54px,6.8vh,78px);width:calc(var(--h)*2.9);height:var(--h);perspective:none;border-radius:calc(var(--h)*.3);
+background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),#fdfcfa;box-shadow:0 0 0 1.5px #2b2622,0 0 0 calc(var(--h)*.09) #fffdf9,0 0 0 calc(var(--h)*.09 + 1.5px) #2b2622,0 8px 16px rgba(30,30,20,.25)}
+#phaseBox .cap{inset:calc(var(--h)*.1)!important;width:auto;border-radius:calc(var(--h)*.16);transform:none!important;overflow:hidden;display:flex;
+background:#cfcac1;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18),0 calc(var(--h)*.06) 0 #8e8981!important;transition:none}
+#phaseBox .cap::after{content:none}
+#phaseBox .seg{position:relative;inset:auto;flex:1;width:auto;height:100%;display:flex;flex-direction:column;gap:calc(var(--h)*.07);align-items:center;justify-content:center;
+font-size:calc(var(--h)*.24);letter-spacing:.04em;color:#3a3632!important;text-shadow:none!important;transition:background .14s ease,box-shadow .14s ease;
+background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),linear-gradient(180deg,#fbfaf7,#f1efea);box-shadow:inset 0 calc(var(--h)*-.06) 0 rgba(0,0,0,.06),inset 0 1px 0 #fff}
+#phaseBox .sf{border-right:1px solid rgba(0,0,0,.14)}
+#phaseBox.on .sf,#phaseBox.brk .sb{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),linear-gradient(180deg,#d9d6cf,#e3e0da);box-shadow:inset 0 3px 5px rgba(0,0,0,.14)}
+#phaseBox.on .sb{box-shadow:inset 0 calc(var(--h)*-.08) 0 rgba(0,0,0,.08),inset 0 1px 0 #fff,-3px 0 6px rgba(0,0,0,.08)}
+#phaseBox.brk .sf{box-shadow:inset 0 calc(var(--h)*-.08) 0 rgba(0,0,0,.08),inset 0 1px 0 #fff,3px 0 6px rgba(0,0,0,.08)}
+#phaseBox .led{display:block;width:calc(var(--h)*.13);height:calc(var(--h)*.13);border-radius:50%;background:#c9c5bd;box-shadow:inset 0 1px 2px rgba(0,0,0,.25);transition:background .2s,box-shadow .2s}
+#phaseBox.on .led{background:var(--tape,#c8f04a);box-shadow:inset 0 -1px 1px rgba(0,0,0,.15),0 0 0 2px color-mix(in srgb,var(--tape,#c8f04a) 35%,transparent),0 0 8px var(--tape,#c8f04a)}
+#phaseBox .sb .led{visibility:hidden}
+#phaseBox{background:none!important;box-shadow:none!important}
+#phaseBox .cap{inset:0!important;box-shadow:inset 0 0 0 1px rgba(0,0,0,.16),0 calc(var(--h)*.07) 0 #8e8981,0 8px 14px rgba(30,30,20,.22)!important}
+#phaseBox.on .sf{color:color-mix(in srgb,var(--tape,#a7d877) 82%,#000)!important}
+#phaseBox{--h:clamp(40px,4.9vh,56px)!important}
+.logpanel .lhr{display:flex;align-items:center;gap:6px}
+.logpanel .logreset{position:relative;width:26px;height:26px;border:0;background:none;padding:3px;color:#9a9189;cursor:pointer;border-radius:50%;transition:color .2s,transform .4s}
+.logpanel .logreset svg{width:100%;height:100%;display:block}
+.logpanel .logreset:hover,.logpanel .logreset:focus-visible{color:#2b2622;transform:rotate(-40deg)}
+.logpanel .logreset.armed{color:#d63a2f}
+.logpanel .logreset em{position:absolute;right:-4px;top:calc(100% + 2px);white-space:nowrap;font:600 11.5px/1 'Pretendard','Noto Sans KR',sans-serif;font-style:normal;letter-spacing:-.2px;color:#6d655e;background:#fffdf8;border:1px solid rgba(0,0,0,.08);border-radius:999px;padding:5px 8px;opacity:0;pointer-events:none;transition:opacity .15s;transform:rotate(1.8deg)}
+.logpanel .logreset:hover em,.logpanel .logreset:focus-visible em,.logpanel .logreset.armed em{opacity:1}
+.logpanel .logreset.armed em{color:#d63a2f}
+.logpanel .logreset:hover,.logpanel .logreset:focus-visible{color:#d63a2f}
+.logpanel .logreset:hover em,.logpanel .logreset:focus-visible em{color:#d63a2f}
+.sharebtn.fly .plane{animation:planeFly .6s cubic-bezier(.4,0,.2,1)}
+@keyframes planeFly{0%{transform:none}45%{transform:translate(26px,-22px) rotate(-8deg);opacity:0}46%{transform:translate(-22px,18px);opacity:0}100%{transform:none;opacity:1}}
 </style>
 </head>
 <body>
+<button class="logbtn" type="button" id="logBtn" aria-label="오늘의 집중 기록 보기" aria-expanded="false" aria-controls="logPanel">
+  <svg viewBox="0 0 100 100" aria-hidden="true">
+    <defs>
+      <linearGradient id="fdBack" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7b928"/><stop offset="1" stop-color="#eaa514"/></linearGradient>
+      <linearGradient id="fdFront" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe49a"/><stop offset=".55" stop-color="#ffd76a"/><stop offset="1" stop-color="#fcc537"/></linearGradient>
+      <filter id="fdN" x="0" y="0" width="1" height="1"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" stitchTiles="stitch" result="t"/><feColorMatrix in="t" values="0 0 0 0 .25 0 0 0 0 .2 0 0 0 0 .1 0 0 0 .55 0" result="g"/><feComposite in="g" in2="SourceAlpha" operator="in" result="gi"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="gi"/></feMerge></filter>
+    </defs>
+    <path d="M14 22a4 4 0 0 1 4-4h20a6 6 0 0 1 4.6 2.2l4 4.6a6 6 0 0 0 4.6 2.2H82a4 4 0 0 1 4 4V74a4 4 0 0 1-4 4H18a4 4 0 0 1-4-4z" fill="url(#fdBack)" filter="url(#fdN)"/>
+    <g class="paper" filter="url(#fdN)"><rect x="19" y="27" width="62" height="40" rx="2.5" fill="#fbfaf6"/><rect x="19" y="27" width="62" height="5" rx="2.5" fill="#eef1f4"/></g>
+    <path class="front" d="M14 36a4 4 0 0 1 4-4h22.5a6 6 0 0 0 4.2-1.7l2.6-2.6A6 6 0 0 1 51.5 26H82a4 4 0 0 1 4 4v44a4 4 0 0 1-4 4H18a4 4 0 0 1-4-4z" fill="url(#fdFront)" stroke="#f0b52a" stroke-width=".8" filter="url(#fdN)"/>
+  </svg>
+</button>
+<a class="mallbtn" id="mallBtn" href="https://100dadam.com/" target="_blank" rel="noopener" aria-label="백다담 공식몰 링크 (새 창)">
+  <svg viewBox="0 0 100 100" aria-hidden="true">
+    <defs>
+      <linearGradient id="lkG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9dde1"/><stop offset=".5" stop-color="#a9afb5"/><stop offset="1" stop-color="#7f868d"/></linearGradient>
+      <clipPath id="lkClip"><rect x="-30" y="-12" width="30" height="24"/></clipPath>
+      <g id="lkRing"><rect x="-11" y="-24" width="22" height="48" rx="11" fill="none" stroke="#757c83" stroke-width="10"/><rect x="-11" y="-24" width="22" height="48" rx="11" fill="none" stroke="url(#lkG)" stroke-width="8.4"/><rect x="-12.2" y="-25.4" width="22" height="48" rx="11" fill="none" stroke="#f4f6f7" stroke-width="2" opacity=".55" stroke-dasharray="40 200" stroke-dashoffset="-6"/></g>
+    </defs>
+    <g class="bag" filter="url(#fdN)">
+      <g transform="translate(50 50) rotate(45)">
+        <use href="#lkRing" transform="translate(0 -15)"/>
+        <use href="#lkRing" transform="translate(0 15)"/>
+        <g clip-path="url(#lkClip)"><use href="#lkRing" transform="translate(0 -15)"/></g>
+      </g>
+    </g>
+  </svg>
+  <span class="tip">백다담 공식몰</span>
+</a>
+<button class="sharebtn" type="button" id="shareBtn" aria-label="친구에게 링크 공유하기">
+  <svg viewBox="0 0 100 100" aria-hidden="true">
+    <defs>
+      <linearGradient id="plW" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e3e6e9"/></linearGradient>
+      <linearGradient id="plS" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c9ced3"/><stop offset="1" stop-color="#9aa1a8"/></linearGradient>
+    </defs>
+    <g class="plane" filter="url(#fdN)">
+      <path d="M93 9 L8 36 L28 47 Z" fill="#ffffff"/>
+      <path d="M93 9 L28 47 L31 75 L37 52 Z" fill="#dfe4e9"/>
+      <path d="M37 52 L31 75 L50 62 Z" fill="#c3ccd5"/>
+      <path d="M93 9 L37 52 L71 76 Z" fill="#f4f6f8"/>
+    </g>
+  </svg>
+  <span class="tip" id="shareTip">친구에게 공유</span>
+</button>
+<section class="logpanel" id="logPanel" hidden aria-label="오늘 총 집중 시간">
+  <div class="sheet">
+    <div class="lh"><b>total time</b><span class="lhr"><span id="logDate"></span><button type="button" class="logreset" id="logReset" aria-label="오늘 기록 초기화"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 12.5a7.5 7.5 0 1 1-2.4-5.6" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><path d="M18.6 3.4l-.4 4.4-4.4-.6" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg><em id="logResetTip">초기화</em></button></span></div>
+    <div class="big" id="logTotal">0<small>분</small></div>
+    <div class="stat">집중 <b id="logRounds">0번</b> · 오늘 우린 차고 <b id="logCups">0개</b></div>
+    <ul id="logList"></ul>
+  </div>
+</section>
 <main>
   <div class="stage" id="order-view">
     <h1>What's your <span id="teaWord">tea</span> today?</h1>
@@ -271,13 +478,12 @@ h1{margin:0;text-align:center;font-family:var(--title);font-weight:400;font-size
   </div>
     <div class="tview" id="session-view" hidden>
       <span id="cupCount" hidden>0</span>
-      <div class="phasebox" id="phaseLabel">focus</div>
+      <div class="phasebox" id="phaseBox" role="status" aria-live="polite"><span class="vh" id="phaseLabel">focus</span><span class="cap" aria-hidden="true"><span class="seg sf"><span>focus</span><i class="led"></i></span><span class="seg sb"><span>break</span><i class="led"></i></span></span></div>
       <div class="ttimer" id="timer" role="timer" aria-label="남은 시간">25:00</div>
       <p class="taskline" id="taskLine">오늘의 티타임</p>
       <p class="tstatus" id="status" aria-live="polite">차고가 녹고 있어요</p>
       <p class="tplan"><span id="planText">25분 집중, 10분 휴식</span></p>
       <button class="homekey" type="button" id="backBtn" aria-label="Home, 처음으로 돌아가기"><span class="key"><span>Home</span></span></button>
-      <button class="arrow right" type="button" id="skipBtn" aria-label="다음 단계로 건너뛰기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="cupwrap">
         <span class="glassbg" aria-hidden="true"></span>
         <svg class="tcup" id="cup" viewBox="0 0 260 340" role="img" aria-label="차고가 우러나는 투명한 유리컵">
@@ -365,6 +571,7 @@ h1{margin:0;text-align:center;font-family:var(--title);font-weight:400;font-size
       <div class="tctrl">
         <button class="kbtn" type="button" id="toggleBtn" aria-label="일시정지"><span class="key"><span id="toggleIcon"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><rect x="4" y="3" width="4" height="14" fill="currentColor"/><rect x="12" y="3" width="4" height="14" fill="currentColor"/></svg></span></span></button>
         <button class="kbtn" type="button" id="stopBtn" aria-label="정지하고 처음부터"><span class="key"><span><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="1.5" fill="#d63a2f"/></svg></span></span></button>
+        <button class="kbtn" type="button" id="skipBtn" aria-label="다음 단계로 건너뛰기"><span class="key"><span><svg viewBox="0 0 20 20" width="20" height="18" aria-hidden="true"><path d="M2 4 L10 10 L2 16 Z M10 4 L18 10 L10 16 Z" fill="currentColor"/></svg></span></span></button>
       </div>
     </div>
 </main>
@@ -596,6 +803,69 @@ h1{margin:0;text-align:center;font-family:var(--title);font-weight:400;font-size
   function key(){ var d = new Date(); return 'baekdadam-pomo-' + d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate(); }
   try { S.cups = parseInt(localStorage.getItem(key()) || '0', 10) || 0; } catch(e){}
   function save(){ try { localStorage.setItem(key(), String(S.cups)); } catch(e){} }
+  // today focus log
+  function logKey(){ var d=new Date(); return 'baekdadam-log-'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+  function loadLog(){ try { var o=JSON.parse(localStorage.getItem(logKey())||'null'); if(o&&typeof o.sec==='number'&&Array.isArray(o.items)) return o; } catch(e){} return {sec:0,items:[]}; }
+  var LOG=loadLog(), logDay=logKey(), roundSec=0, lastT=Date.now(), logTicks=0;
+  function saveLog(){ try { localStorage.setItem(logDay, JSON.stringify(LOG)); } catch(e){} }
+  function commitRound(done){ if(done){ LOG.items.push({task:userTask||'티타임', tea:picked?picked.name:'차고', c:picked?picked.kc:'#d6dce3', min:Math.max(1,Math.round(roundSec/60)), t:Date.now(), done:1}); } roundSec=0; saveLog(); if(!$('logPanel').hidden) drawLog(); }
+  setInterval(function(){
+    var n=Date.now(), d=Math.min(5,(n-lastT)/1000); lastT=n;
+    if(logKey()!==logDay){ saveLog(); logDay=logKey(); LOG={sec:0,items:[]}; }
+    if(S.running && !S.waiting && S.phase==='focus'){ roundSec+=d; if(++logTicks%10===0) saveLog(); if(!$('logPanel').hidden) drawLog(); }
+  },500);
+  function dur(s){ var m=Math.floor(s/60), h=Math.floor(m/60); m=m%60; return h ? h+'<small>시간</small>'+m+'<small>분</small>' : m+'<small>분</small>'; }
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function drawLog(){
+    var d=new Date(); $('logDate').textContent=(d.getMonth()+1)+'월 '+d.getDate()+'일';
+    $('logTotal').innerHTML=dur(LOG.items.reduce(function(a,it){ return a + (it.done ? it.min*60 : 0); },0));
+    var DONE=LOG.items.filter(function(it){ return it.done; }); $('logRounds').textContent=DONE.length+'번'; $('logCups').textContent=S.cups+'개';
+    var G={}, order=[]; DONE.forEach(function(it){ var k=it.task; if(!G[k]){ G[k]={task:k,min:0,n:0,cs:[]}; order.push(k); } G[k].min+=it.min; G[k].n++; if(G[k].cs.indexOf(it.c)<0) G[k].cs.push(it.c); });
+    $('logList').innerHTML = order.length ? '<li class="hd"><span>todo</span><em>time</em></li>' + order.slice().reverse().map(function(k){ var g=G[k], h=Math.floor(g.min/60), m=g.min%60; return '<li><span><b class="chips">'+g.cs.map(function(c){ return '<i class="chip" style="--cc:'+esc(c)+'"></i>'; }).join('')+'</b>'+esc(g.task)+'</span><em class="tm">'+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+'</em></li>'; }).join('') : '<li class="empty" style="display:block">집중 세션을 한 번 끝까지 마치면 여기에 적혀요.</li>';
+  }
+  function setLog(open){ $('logPanel').hidden=!open; $('logBtn').setAttribute('aria-expanded', String(open)); if(open){ drawLog(); if(typeof rustle==='function') rustle(); } }
+  $('logBtn').addEventListener('click', function(e){ e.stopPropagation(); setLog($('logPanel').hidden); });
+  document.addEventListener('click', function(e){ if(!$('logPanel').hidden && !e.target.closest('#logPanel') && !e.target.closest('#logBtn')) setLog(false); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && !$('logPanel').hidden){ setLog(false); $('logBtn').focus(); } });
+  window.addEventListener('pagehide', saveLog);
+  (function(){
+    var btn=$('logReset'), tip=$('logResetTip'), tm;
+    btn.addEventListener('click', function(e){
+      e.stopPropagation(); clearTimeout(tm);
+      LOG={sec:0,items:[]}; roundSec=0; saveLog(); S.cups=0; save(); drawLog();
+    });
+  })();
+
+  // share with a friend
+  (function(){
+    var SITE='https://beakdadam.github.io/100dadam-pomodoro/', btn=$('shareBtn'), tip=$('shareTip'), tt;
+    function url(){ return /github\.io$/.test(location.hostname) ? location.origin + location.pathname : SITE; }
+    function flash(msg){ tip.textContent=msg; btn.classList.add('done'); clearTimeout(tt); tt=setTimeout(function(){ btn.classList.remove('done'); tip.textContent='친구에게 공유'; }, 1800); }
+    function copy(u){
+      if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(u).then(function(){ flash('링크를 복사했어요'); }, function(){ fallback(u); });
+      fallback(u);
+    }
+    function fallback(u){ var t=document.createElement('textarea'); t.value=u; t.setAttribute('readonly',''); t.style.position='fixed'; t.style.opacity='0'; document.body.appendChild(t); t.select(); var ok=false; try{ ok=document.execCommand('copy'); }catch(e){} document.body.removeChild(t); flash(ok ? '링크를 복사했어요' : u); }
+    function whoosh(){
+      var c = audioCtx(); if (!c) return; if (c.state === 'suspended') c.resume();
+      var t = c.currentTime + 0.01, D = 0.55;
+      var src = c.createBufferSource(); src.buffer = noiseBuf; src.loop = true;
+      var bp = c.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 1.2;
+      bp.frequency.setValueAtTime(500, t); bp.frequency.exponentialRampToValueAtTime(2600, t + D*0.55); bp.frequency.exponentialRampToValueAtTime(900, t + D);
+      var g = c.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.22, t + D*0.4); g.gain.exponentialRampToValueAtTime(0.0001, t + D);
+      var pan = c.createStereoPanner ? c.createStereoPanner() : null;
+      src.connect(bp); bp.connect(g);
+      if (pan){ pan.pan.setValueAtTime(-0.6, t); pan.pan.linearRampToValueAtTime(0.7, t + D); g.connect(pan); pan.connect(c.destination); } else g.connect(c.destination);
+      src.start(t); src.stop(t + D + 0.05);
+    }
+    btn.addEventListener('click', function(){
+      var u=url(), data={ title:'백다담 티 포모도로', text:'차고 한 알 우리는 동안 같이 집중해요 🍵', url:u };
+      whoosh(); btn.classList.remove('fly'); void btn.offsetWidth; btn.classList.add('fly');
+      copy(u);
+      var touch = window.matchMedia && matchMedia('(pointer: coarse)').matches;
+      if (touch && navigator.share && (!navigator.canShare || navigator.canShare(data))) setTimeout(function(){ navigator.share(data).catch(function(){}); }, 450);
+    });
+  })();
   function hex(h){ return [1,3,5].map(function(i){ return parseInt(h.slice(i,i+2),16); }); }
   function mix(a,b,t){ var A=hex(a),B=hex(b); return 'rgb('+A.map(function(v,i){return Math.round(v+(B[i]-v)*t);}).join(',')+')'; }
   function fmt(s){ s=Math.max(0,Math.ceil(s)); var m=Math.floor(s/60), r=s%60; return (m<10?'0':'')+m+':'+(r<10?'0':'')+r; }
@@ -626,16 +896,16 @@ h1{margin:0;text-align:center;font-family:var(--title);font-weight:400;font-size
 
   function start(){ S.running=true; S.waiting=false; S.endAt=Date.now()+S.remaining*1000; if(S.phase==='focus'&&S.remaining===S.total) drop(); render(); }
   function pause(){ S.remaining=Math.max(0,(S.endAt-Date.now())/1000); S.running=false; render(); }
-  function endPhase(){ chime(); if(S.phase==='focus'){ S.cups++; save(); setPhase('break'); start(); } else { setPhase('focus'); S.running=false; S.waiting=true; render(); } }
+  function endPhase(skipped){ chime(); if(S.phase==='focus'){ commitRound(!skipped); if(!skipped) S.cups++; save(); setPhase('break'); start(); } else { setPhase('focus'); S.running=false; S.waiting=true; render(); } }
   var PAUSEI='<svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><rect x="4" y="3" width="4" height="14" fill="currentColor"/><rect x="12" y="3" width="4" height="14" fill="currentColor"/></svg>', PLAYI='<svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M5 3 L17 10 L5 17 Z" fill="currentColor"/></svg>';
   function render(){
     var p = S.total ? 1 - S.remaining/S.total : 0, liq=$('liquid');
     $('timer').textContent = fmt(S.remaining);
-    $('phaseLabel').textContent = S.waiting ? 'ready' : (S.phase === 'focus' ? 'focus' : 'break');
+    $('phaseLabel').textContent = S.waiting ? 'ready' : (S.phase === 'focus' ? 'focus' : 'break'); $('phaseBox').classList.toggle('on', !S.waiting && S.phase === 'focus'); var _pb=$('phaseBox'), _ps=_pb.className; _pb.classList.toggle('brk', !S.waiting && S.phase !== 'focus'); if(_pb.dataset.ps && _pb.dataset.ps!==_pb.className && typeof keyClick==='function'){ keyClick(false); setTimeout(function(){ keyClick(true); },60); } _pb.dataset.ps=_pb.className;
     $('cupCount').textContent = S.cups;
     $('session-view').classList.toggle('paused', !S.running);
     document.title = (S.running ? fmt(S.remaining)+' · ' : '') + '백다담 티 포모도로';
-    if (S.waiting){ $('dissolve').setAttribute('opacity','0'); setLevel(EMPTY_Y); place(1,-40); $('glow').setAttribute('opacity','0'); $('status').textContent='다음 한 알을 넣을 차례예요'; $('toggleIcon').innerHTML=PLAYI; $('toggleBtn').setAttribute('aria-label','다음 한 알 넣고 시작'); return; }
+    if (S.waiting){ $('dissolve').setAttribute('opacity','0'); $('baseTint').setAttribute('opacity','0'); $('liquid').setAttribute('opacity','0'); setLevel(EMPTY_Y); place(1,-40); $('glow').setAttribute('opacity','0'); $('status').textContent='다음 한 알을 넣을 차례예요'; $('toggleIcon').innerHTML=PLAYI; $('toggleBtn').setAttribute('aria-label','다음 한 알 넣고 시작'); return; }
     var steep = S.phase==='focus' ? p : 1;
     var col = mix(WATER, picked.tea, Math.pow(steep,.8));
     liq.setAttribute('fill', col); liq.setAttribute('opacity', (.42 + .48*steep).toFixed(3));
@@ -816,6 +1086,7 @@ h1{margin:0;text-align:center;font-family:var(--title);font-weight:400;font-size
     $('planText').textContent = S.focus + '분 집중 · ' + S.brk + '분 휴식';
     $('taskLine').textContent = userTask || '티타임';
     $('backBtn').style.setProperty('--kc', picked.kc); $('backBtn').style.setProperty('--kt', picked.kt);
+    $('session-view').style.setProperty('--tape', picked.kc); $('session-view').style.setProperty('--tape-ink', picked.kt);
     (function(c,d){ $('pg0').setAttribute('stop-color','color-mix(in srgb,'+c+' 80%, #000)'); $('pg1').setAttribute('stop-color','color-mix(in srgb,'+c+' 55%, #fff)'); $('pg2').setAttribute('stop-color',c); $('pg3').setAttribute('stop-color',d); $('potRim').setAttribute('stroke', d); })(picked.kc, picked.dk);
     $('session-view').hidden = false;
     setPhase('focus'); start(); $('toggleBtn').focus();
@@ -825,9 +1096,9 @@ h1{margin:0;text-align:center;font-family:var(--title);font-weight:400;font-size
     openTime();
   });
   $('toggleBtn').addEventListener('click', function(){ if(S.waiting||!S.running) start(); else pause(); });
-  $('stopBtn').addEventListener('click', function(){ S.running = false; S.waiting = false; setPhase('focus'); pouring = false; setLevel(EMPTY_Y); render(); setLevel(EMPTY_Y); place(1,-40); });
-  $('skipBtn').addEventListener('click', function(){ if(S.waiting){ start(); return; } S.remaining=0; endPhase(); });
-  $('backBtn').addEventListener('click', function(){ if (nature.on) setNature(false); S.running=false; S.waiting=false; $('session-view').hidden=true; $('order-view').hidden=false; document.title='백다담 티 포모도로'; orderBtn.focus(); });
+  $('stopBtn').addEventListener('click', function(){ if(S.phase==='focus') commitRound(false); S.running = false; setPhase('focus'); S.waiting = true; pouring = false; var tb=$('tablet'); if(tb) tb.classList.remove('dropping'); render(); $('status').textContent='빈 잔이에요. 새 한 알을 넣어 시작해요'; });
+  $('skipBtn').addEventListener('click', function(){ if(S.waiting){ start(); return; } S.remaining=0; endPhase(true); });
+  $('backBtn').addEventListener('click', function(){ if(S.phase==='focus') commitRound(false); if (nature.on) setNature(false); S.running=false; S.waiting=false; $('session-view').hidden=true; $('order-view').hidden=false; document.title='백다담 티 포모도로'; orderBtn.focus(); });
 })();
 </script>
 </body>
