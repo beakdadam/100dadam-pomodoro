@@ -298,8 +298,18 @@ h1{margin:0;text-align:center;font-family:var(--title);font-weight:400;font-size
           <filter id="dissF" x="-50%" y="-50%" width="200%" height="200%"><feTurbulence type="fractalNoise" baseFrequency=".035 .06" numOctaves="2" seed="9" result="t"><animate attributeName="seed" dur="6s" values="9;12;9" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" in2="t" scale="34" xChannelSelector="R" yChannelSelector="G"/><feGaussianBlur stdDeviation="6"/></filter>
           <filter id="cgrain"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .2 0"/><feComposite in2="SourceGraphic" operator="in"/></filter>
         </defs>
-        <ellipse cx="130" cy="296" rx="86" ry="11" fill="#1d2a20" opacity=".28" filter="url(#soft)"/>
-        <ellipse id="glow" cx="140" cy="300" rx="70" ry="9" fill="#e8dcc6" opacity="0" filter="url(#soft)"/>
+        <defs>
+          <pattern id="weave" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#e9dfcc"/><path d="M0 1.5h6M0 4.5h6" stroke="#d6c8ae" stroke-width="1.2"/><path d="M1.5 0v6M4.5 0v6" stroke="#f4ecdc" stroke-width=".8" opacity=".8"/></pattern>
+          <radialGradient id="coastShade" cx=".4" cy=".35" r=".75"><stop offset="0" stop-color="#fff" stop-opacity=".25"/><stop offset="1" stop-color="#000" stop-opacity=".14"/></radialGradient>
+        </defs>
+        <ellipse cx="130" cy="303" rx="106" ry="20" fill="#1d2a20" opacity=".22" filter="url(#soft)"/>
+        <ellipse cx="130" cy="297" rx="102" ry="18" fill="#bfae90"/>
+        <ellipse cx="130" cy="293" rx="102" ry="18" fill="url(#weave)"/>
+        <ellipse cx="130" cy="293" rx="102" ry="18" fill="url(#coastShade)"/>
+        <ellipse cx="130" cy="293" rx="102" ry="18" fill="#000" filter="url(#cgrain)" opacity=".35"/>
+        <ellipse cx="130" cy="293" rx="93" ry="15.5" fill="none" stroke="#a8946f" stroke-width="1" stroke-dasharray="3 2.5" opacity=".8"/>
+        <ellipse cx="130" cy="294" rx="74" ry="9" fill="#3a2e22" opacity=".3" filter="url(#soft)"/>
+        <ellipse id="glow" cx="138" cy="295" rx="66" ry="8" fill="#e8dcc6" opacity="0" filter="url(#soft)"/>
         <rect id="stream" x="186" y="24" width="4.5" height="0" rx="2.5" fill="#e8f3f6" opacity="0"/>
         <g id="pot" opacity="0" transform="translate(192 24) scale(.6)">
           <defs>
@@ -759,7 +769,7 @@ h1{margin:0;text-align:center;font-family:var(--title);font-weight:400;font-size
   }
   $('timeBack').addEventListener('click', function(){ $('time-view').hidden = true; $('order-view').hidden = false; orderBtn.focus(); });
   var nameInput = $('nameInput'), userName = '';
-  try { nameInput.value = localStorage.getItem('baekdadam-name') || ''; } catch(e){}
+  nameInput.value = ''; try { localStorage.removeItem('baekdadam-name'); } catch(e){}
   $('nextBtn').addEventListener('click', function(){
     $('time-view').hidden = true; $('name-view').hidden = false;
     $('name-view').style.setProperty('--tw3', chosen.kc || '#2e2620');
@@ -801,7 +811,6 @@ h1{margin:0;text-align:center;font-family:var(--title);font-weight:400;font-size
   $('brewBtn').addEventListener('click', function(){
     userTask = taskInput.value.trim();
     userName = nameInput.value.trim();
-    try { localStorage.setItem('baekdadam-name', userName); } catch(e){}
     $('name-view').hidden = true;
     S.focus = mins; S.brk = brkMin;
     $('planText').textContent = S.focus + '분 집중 · ' + S.brk + '분 휴식';
