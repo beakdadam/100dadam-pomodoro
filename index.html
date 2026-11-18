@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>백다담 티 포모도로</title>
+<title>백다담 뽀모도로 타이머</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -381,6 +381,29 @@ background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
 .logpanel .logreset:hover em,.logpanel .logreset:focus-visible em{color:#d63a2f}
 .sharebtn.fly .plane{animation:planeFly .6s cubic-bezier(.4,0,.2,1)}
 @keyframes planeFly{0%{transform:none}45%{transform:translate(26px,-22px) rotate(-8deg);opacity:0}46%{transform:translate(-22px,18px);opacity:0}100%{transform:none;opacity:1}}
+/* phone layout */
+
+body::before{bottom:auto;height:100vh;height:100lvh;min-height:100%}
+@media (max-width:640px){
+  .homekey .key{width:58px!important;font-size:13px!important}
+  #phaseBox{--h:36px!important}
+  .logbtn{width:48px;top:calc(env(safe-area-inset-top,0px) + 2.2vh);right:3.5vw}
+  .mallbtn,.sharebtn{width:38px;right:calc(3.5vw + 5px)}
+  .mallbtn{top:calc(env(safe-area-inset-top,0px) + 2.2vh + 52px)}
+  .sharebtn{top:calc(env(safe-area-inset-top,0px) + 2.2vh + 96px)}
+  .logpanel{left:14px;right:14px;width:auto;top:calc(env(safe-area-inset-top,0px) + 2.2vh + 56px);transform:rotate(-1deg);animation:none}
+  .logpanel .sheet{--lh:30px;font-size:14px;padding-left:54px;padding-right:16px;max-height:62vh;
+    background-position:-6px 0,0 0,0 0,0 0}
+  .logpanel .lh b{font-size:22px}
+  .logpanel .big{font-size:32px}
+  .logpanel .empty{font-size:13px}
+}
+@media (hover:none){
+  .mallbtn .tip,.logpanel .logreset em{display:none}
+  .sharebtn:not(.done) .tip{opacity:0!important}
+  .logpanel .logreset:hover{color:#9a9189;transform:none}
+}
+#phaseBox .seg{font-size:calc(var(--h)*.27)}
 </style>
 </head>
 <body>
@@ -821,7 +844,7 @@ background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
     $('logTotal').innerHTML=dur(LOG.items.reduce(function(a,it){ return a + (it.done ? it.min*60 : 0); },0));
     var DONE=LOG.items.filter(function(it){ return it.done; }); $('logRounds').textContent=DONE.length+'번'; $('logCups').textContent=S.cups+'개';
     var G={}, order=[]; DONE.forEach(function(it){ var k=it.task; if(!G[k]){ G[k]={task:k,min:0,n:0,cs:[]}; order.push(k); } G[k].min+=it.min; G[k].n++; if(G[k].cs.indexOf(it.c)<0) G[k].cs.push(it.c); });
-    $('logList').innerHTML = order.length ? '<li class="hd"><span>todo</span><em>time</em></li>' + order.slice().reverse().map(function(k){ var g=G[k], h=Math.floor(g.min/60), m=g.min%60; return '<li><span><b class="chips">'+g.cs.map(function(c){ return '<i class="chip" style="--cc:'+esc(c)+'"></i>'; }).join('')+'</b>'+esc(g.task)+'</span><em class="tm">'+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+'</em></li>'; }).join('') : '<li class="empty" style="display:block">집중 세션을 한 번 끝까지 마치면 여기에 적혀요.</li>';
+    $('logList').innerHTML = order.length ? '<li class="hd"><span>todo</span><em>time</em></li>' + order.slice().reverse().map(function(k){ var g=G[k], h=Math.floor(g.min/60), m=g.min%60; return '<li><span><b class="chips">'+g.cs.map(function(c){ return '<i class="chip" style="--cc:'+esc(c)+'"></i>'; }).join('')+'</b>'+esc(g.task)+'</span><em class="tm">'+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+'</em></li>'; }).join('') : '<li class="empty" style="display:block">세션을 끝까지 마치면 여기에 적혀요.</li>';
   }
   function setLog(open){ $('logPanel').hidden=!open; $('logBtn').setAttribute('aria-expanded', String(open)); if(open){ drawLog(); if(typeof rustle==='function') rustle(); } }
   $('logBtn').addEventListener('click', function(e){ e.stopPropagation(); setLog($('logPanel').hidden); });
@@ -859,7 +882,7 @@ background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
       src.start(t); src.stop(t + D + 0.05);
     }
     btn.addEventListener('click', function(){
-      var u=url(), data={ title:'백다담 티 포모도로', text:'차고 한 알 우리는 동안 같이 집중해요 🍵', url:u };
+      var u=url(), data={ title:'백다담 뽀모도로 타이머', text:'차고 한 알 우리는 동안 같이 집중해요 🍵', url:u };
       whoosh(); btn.classList.remove('fly'); void btn.offsetWidth; btn.classList.add('fly');
       copy(u);
       var touch = window.matchMedia && matchMedia('(pointer: coarse)').matches;
@@ -904,7 +927,7 @@ background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
     $('phaseLabel').textContent = S.waiting ? 'ready' : (S.phase === 'focus' ? 'focus' : 'break'); $('phaseBox').classList.toggle('on', !S.waiting && S.phase === 'focus'); var _pb=$('phaseBox'), _ps=_pb.className; _pb.classList.toggle('brk', !S.waiting && S.phase !== 'focus'); if(_pb.dataset.ps && _pb.dataset.ps!==_pb.className && typeof keyClick==='function'){ keyClick(false); setTimeout(function(){ keyClick(true); },60); } _pb.dataset.ps=_pb.className;
     $('cupCount').textContent = S.cups;
     $('session-view').classList.toggle('paused', !S.running);
-    document.title = (S.running ? fmt(S.remaining)+' · ' : '') + '백다담 티 포모도로';
+    document.title = (S.running ? fmt(S.remaining)+' · ' : '') + '백다담 뽀모도로 타이머';
     if (S.waiting){ $('dissolve').setAttribute('opacity','0'); $('baseTint').setAttribute('opacity','0'); $('liquid').setAttribute('opacity','0'); setLevel(EMPTY_Y); place(1,-40); $('glow').setAttribute('opacity','0'); $('status').textContent='다음 한 알을 넣을 차례예요'; $('toggleIcon').innerHTML=PLAYI; $('toggleBtn').setAttribute('aria-label','다음 한 알 넣고 시작'); return; }
     var steep = S.phase==='focus' ? p : 1;
     var col = mix(WATER, picked.tea, Math.pow(steep,.8));
@@ -1098,7 +1121,7 @@ background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
   $('toggleBtn').addEventListener('click', function(){ if(S.waiting||!S.running) start(); else pause(); });
   $('stopBtn').addEventListener('click', function(){ if(S.phase==='focus') commitRound(false); S.running = false; setPhase('focus'); S.waiting = true; pouring = false; var tb=$('tablet'); if(tb) tb.classList.remove('dropping'); render(); $('status').textContent='빈 잔이에요. 새 한 알을 넣어 시작해요'; });
   $('skipBtn').addEventListener('click', function(){ if(S.waiting){ start(); return; } S.remaining=0; endPhase(true); });
-  $('backBtn').addEventListener('click', function(){ if(S.phase==='focus') commitRound(false); if (nature.on) setNature(false); S.running=false; S.waiting=false; $('session-view').hidden=true; $('order-view').hidden=false; document.title='백다담 티 포모도로'; orderBtn.focus(); });
+  $('backBtn').addEventListener('click', function(){ if(S.phase==='focus') commitRound(false); if (nature.on) setNature(false); S.running=false; S.waiting=false; $('session-view').hidden=true; $('order-view').hidden=false; document.title='백다담 뽀모도로 타이머'; orderBtn.focus(); });
 })();
 </script>
 </body>
