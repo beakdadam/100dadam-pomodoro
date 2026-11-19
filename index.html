@@ -456,6 +456,16 @@ box-shadow:inset 0 -5px 0 rgba(0,0,0,.08),inset 0 0 0 1px rgba(0,0,0,.06),0 3px 
 .logpanel .empty{font-size:18px!important}
 .logpanel .lh b,.logpanel .big,.logpanel .stat,.logpanel li{filter:url(#pencil)}
 @media (max-width:640px){.logpanel .sheet{font-size:18px!important}.logpanel .lh b{font-size:26px!important}.logpanel .big{font-size:38px!important}.logpanel li,.logpanel li em{font-size:18px!important}.logpanel .stat{font-size:17px!important}}
+/* task text joins the indicator when focus is on */
+#phaseBox.metal{width:auto!important;min-width:calc(var(--h)*3.4);max-width:min(78vw,720px);padding-left:calc(var(--h)*.1);padding-right:calc(var(--h)*.1)}
+#phaseBox.metal .face{padding:0 calc(var(--h)*.55);gap:0;white-space:nowrap}
+#phaseBox.metal .ptask{display:inline-block;max-width:0;opacity:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle;position:relative;z-index:1;
+font-family:'Pretendard','Pretendard Variable','Noto Sans KR',sans-serif;font-weight:600;font-size:calc(var(--h)*.36);letter-spacing:-.3px;color:var(--tape-ink,#fff);
+transition:max-width .5s cubic-bezier(.4,0,.2,1),opacity .35s ease .1s,margin .5s}
+#phaseBox.metal .ptask::before{content:"";display:inline-block;width:1px;height:.9em;background:currentColor;opacity:.45;margin:0 .7em 0 0;vertical-align:-.1em}
+#phaseBox.metal.on .ptask{max-width:min(60vw,560px);opacity:1;margin-left:.7em}
+.tview > .taskline,.taskline{display:none!important}
+@media (max-width:640px){#phaseBox.metal{max-width:58vw}#phaseBox.metal.on .ptask{max-width:34vw}#phaseBox.metal .face{padding:0 calc(var(--h)*.4)}}
 </style>
 </head>
 <body>
@@ -553,7 +563,7 @@ box-shadow:inset 0 -5px 0 rgba(0,0,0,.08),inset 0 0 0 1px rgba(0,0,0,.06),0 3px 
   </div>
     <div class="tview" id="session-view" hidden>
       <span id="cupCount" hidden>0</span>
-      <div class="phasebox metal" id="phaseBox" role="status" aria-live="polite"><span class="face"><span class="ptxt" id="phaseLabel">focus</span></span></div>
+      <div class="phasebox metal" id="phaseBox" role="status" aria-live="polite"><span class="face"><span class="ptxt" id="phaseLabel">focus</span><span class="ptask" id="phaseTask"></span></span></div>
       <div class="ttimer" id="timer" role="timer" aria-label="남은 시간">25:00</div>
       <p class="taskline" id="taskLine">오늘의 티타임</p>
       <p class="tstatus" id="status" aria-live="polite">차고가 녹고 있어요</p>
@@ -1196,7 +1206,7 @@ box-shadow:inset 0 -5px 0 rgba(0,0,0,.08),inset 0 0 0 1px rgba(0,0,0,.06),0 3px 
     $('name-view').hidden = true;
     S.focus = mins; S.brk = brkMin;
     $('planText').textContent = S.focus + '분 집중 · ' + S.brk + '분 휴식';
-    $('taskLine').textContent = userTask || '티타임';
+    $('taskLine').textContent = userTask || '티타임'; $('phaseTask').textContent = userTask || '티타임';
     $('backBtn').style.setProperty('--kc', picked.kc); $('backBtn').style.setProperty('--kt', picked.kt);
     $('session-view').style.setProperty('--tape', picked.kc); $('session-view').style.setProperty('--tape-ink', picked.kt);
     (function(c,d){ $('pg0').setAttribute('stop-color','color-mix(in srgb,'+c+' 80%, #000)'); $('pg1').setAttribute('stop-color','color-mix(in srgb,'+c+' 55%, #fff)'); $('pg2').setAttribute('stop-color',c); $('pg3').setAttribute('stop-color',d); $('potRim').setAttribute('stroke', d); })(picked.kc, picked.dk);
